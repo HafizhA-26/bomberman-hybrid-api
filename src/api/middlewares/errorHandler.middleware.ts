@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import config from '../../config';
+import logger from '../../utils/logger';
 
 interface AppError extends Error {
   statusCode?: number;
@@ -13,6 +14,8 @@ export const errorHandler = (
     next: NextFunction
   
 ) => {
+    logger.error(err);
+
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
   

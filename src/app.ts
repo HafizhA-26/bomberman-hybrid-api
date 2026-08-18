@@ -3,18 +3,16 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import apiRoutes from './api/routes';
+import supabase from './config/supabase';
 import { errorHandler } from './api/middlewares/errorHandler.middleware';
 
-// Inisialisasi aplikasi Express
 const app: Application = express();
 
-// Middleware
-app.use(cors()); // Mengizinkan Cross-Origin Resource Sharing
+app.use(cors());
 app.use(helmet()); 
-app.use(express.json()); // Mem-parse body request sebagai JSON
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Logger untuk request (morgan)
 app.use(morgan('dev'));
 
 // Health Check Endpoint
@@ -22,7 +20,17 @@ app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({ status: 'Bomberman API is running!' });
 });
 
-// Rute Utama API
+app.get('/test-db', async (req: Request, res: Response) => {
+    // Mencoba mengambil data dari tabel players (meski masih kosong)
+    const { data, error } = await supabase.from('players').select('*').limit(1);
+    
+    if (error) {
+        return res.status(500).json({ status: 'Database Error', error: error.message });
+    }
+    
+    res.status(200).json({ status: 'Supabase Connected!', data });
+});
+
 app.use('/api', apiRoutes);
 
 // Middleware untuk Error Handling (harus diletakkan paling akhir)
