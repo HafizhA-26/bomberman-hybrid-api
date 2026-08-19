@@ -1,7 +1,8 @@
 import { Router } from 'express';
+import { LoginPlayer } from '../controllers/player.controller';
 
 const router = Router();
 
-// Add all player routes below
+router.post('/login', LoginPlayer);
 
 export default router;

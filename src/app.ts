@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import apiRoutes from './api/routes';
 import supabase from './config/supabase';
 import { errorHandler } from './api/middlewares/errorHandler.middleware';
+import router from './api/routes';
 
 const app: Application = express();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan('dev'));
-
+app.use('/', router);
 // Health Check Endpoint
 app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({ status: 'Bomberman API is running!' });
