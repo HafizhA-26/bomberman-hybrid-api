@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { LoginPlayer } from '../controllers/player.controller';
+import { GetPlayerByDevice, LoginPlayer } from '../controllers/player.controller';
 
 const router = Router();
 
-router.post('/login', LoginPlayer);
+router.get("/check/:deviceId", GetPlayerByDevice);
+router.put("/update-name", LoginPlayer);
 
 export default router;
