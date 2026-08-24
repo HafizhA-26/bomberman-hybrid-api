@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { UpdateRank } from "../controllers/leaderboard.controller";
+import { PostRank } from "../controllers/leaderboard.controller";
 
 const router = Router();
-router.post("/", UpdateRank);
+router.post("/", PostRank);
 
 export default router;
