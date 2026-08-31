@@ -28,7 +28,7 @@ export async function LoginPlayer(req: Request, res: Response) {
         const { username, deviceId } = req.body;
         const foundPlayer = await PlayerModel.findByUsername(username);
 
-        if(foundPlayer && foundPlayer.device_id != deviceId)
+        if(foundPlayer && foundPlayer.deviceId != deviceId)
         {
             return res.status(400).json({
                 status: "failed",
