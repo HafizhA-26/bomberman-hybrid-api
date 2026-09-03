@@ -13,9 +13,13 @@ export async function PostRank(req: Request, res: Response) {
         let playerRank: PlayerLeaderboard;
         if(prevRankData)
         {
-            playerRank = prevRankData as PlayerLeaderboard;
-            playerRank.bestRank = prevRankData.rank;
-            playerRank.rank = predictedRank;
+            playerRank = {
+                username: prevRankData.username,
+                actionCount: reqData.actionCount,
+                playTime: reqData.playTime,
+                bestRank: prevRankData.rank,
+                rank: predictedRank
+            }
             
             // Check break record and update data
             if (prevRankData.playTime > reqData.playTime || (prevRankData.playTime == reqData.playTime && prevRankData.actionCount > reqData.actionCount)) {

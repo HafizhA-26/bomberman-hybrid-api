@@ -68,7 +68,7 @@ export const LeaderboardModel = {
 
         const { data, count: playerRank, error: error_2 } = await supabase
             .from("leaderboard_view")
-            .select("*", { count: "exact", head: false })
+            .select("*", { count: "exact", head: true })
             .match({ enemy_type: req.enemyType })
             .or(`playtime.lt.${playerData.playtime},and(playtime.eq.${playerData.playtime},action_count.lt.${playerData.action_count})`);
         if (error_2) 
@@ -129,7 +129,6 @@ export const LeaderboardModel = {
             .match({ device_id: req.deviceId, enemy_type: req.enemyType })
             .select("players!inner(username),action_count,playtime")
             .single();
-        console.log(playerData);
         if (error_1) throw error_1;
             
         const { count: playerRank, error: error_2 } = await supabase
