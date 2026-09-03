@@ -23,8 +23,13 @@ export interface LeaderboardResponse {
 }
 
 export const LeaderboardModel = {
-    async getTopLeaderboard(): Promise<LeaderboardData[]> {
-        const { data, error } = await supabase.from("leaderboard_view").select("username, action_count, playtime").order("playtime", { ascending: true }).order("action_count", { ascending: true });
+    async getTopLeaderboard(enemyType: number): Promise<LeaderboardData[]> {
+        const { data, error } = await supabase.from("leaderboard_view")
+            .select("username, action_count, playtime")
+            .order("playtime", { ascending: true })
+            .order("action_count", { ascending: true })
+            .eq("enemy_type", enemyType)
+            .limit(10);
 
         if (error) throw error;
 
@@ -89,9 +94,8 @@ export const LeaderboardModel = {
                     enemy_type: req.enemyType,
                 },
             )
-            .select("players(username),action_count,playtime")
+            .select("players!inner(username),action_count,playtime")
             .single();
-        
         if (error_1) throw error_1;
 
         const { count: playerRank, error: error_2 } = await supabase
@@ -104,11 +108,11 @@ export const LeaderboardModel = {
 
         const result: LeaderboardData = {
             rank: (playerRank || 0) + 1,
-            username: playerData.players[0]?.username,
+            // @ts-ignore
+            username: playerData.players.username,
             actionCount: playerData.action_count,
             playTime: playerData.playtime,
         };
-
         return result;
     },
     async update(req: LeaderboardRequest): Promise<LeaderboardData> {

@@ -33,7 +33,7 @@ export async function PostRank(req: Request, res: Response) {
         }
 
         console.log("Get Top Leaderboard");
-        const topLeaderboard: LeaderboardData[] = await LeaderboardModel.getTopLeaderboard();
+        const topLeaderboard: LeaderboardData[] = await LeaderboardModel.getTopLeaderboard(reqData.enemyType);
 
         const responseData: LeaderboardResponse = {
             topRanks: topLeaderboard,
