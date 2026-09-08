@@ -1,11 +1,21 @@
 
 import { Request, Response } from "express";
-import { PlayerModel } from "../models/player.model";
+import { InitPlayerResponse, PlayerModel } from "../models/player.model";
+import { RoundWinModel, WinRecordData } from "../models/round_win.model";
 
 export async function GetPlayerByDevice(req: Request, res: Response) {
     try{
         const deviceId = req.params.deviceId as string;
-        const data = await PlayerModel.findByDeviceId(deviceId);
+        const playerData = await PlayerModel.findByDeviceId(deviceId);
+
+        let data : InitPlayerResponse | null = null; 
+
+        if(playerData)
+        {
+            data = playerData as InitPlayerResponse;
+            const winRecordData : WinRecordData[] = await RoundWinModel.getCurrentWinRecord(deviceId);
+            data.winRecords = winRecordData;
+        }
 
         return res.status(200).json({
             data,

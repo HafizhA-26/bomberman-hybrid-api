@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { LeaderboardData, LeaderboardModel, LeaderboardRequest, LeaderboardResponse, PlayerLeaderboard } from "../models/leaderboard.model";
+import { RoundWinModel, WinRecordData } from "../models/round_win.model";
 
 export async function PostRank(req: Request, res: Response) {
     try {
         const reqData = req.body as LeaderboardRequest;
 
-        console.log("Get Prev Rank Data");
         const prevRankData: LeaderboardData | null = await LeaderboardModel.findByDeviceAndEnemy(reqData);
-        console.log("Get Predicted Rank Data");
         const predictedRank: number = await LeaderboardModel.getPredictedRank(reqData);
+        const winRecord: WinRecordData = await RoundWinModel.updateWinLoseCount(reqData);
 
         let playerRank: PlayerLeaderboard;
         if(prevRankData)
@@ -30,18 +30,17 @@ export async function PostRank(req: Request, res: Response) {
                 playerRank.rank = newRankData.rank;
             }
         }else{
-            console.log("Insert Data");
             const newRankData: LeaderboardData = await LeaderboardModel.insert(reqData);
             playerRank = newRankData as PlayerLeaderboard;
             playerRank.bestRank = newRankData.rank;
         }
 
-        console.log("Get Top Leaderboard");
         const topLeaderboard: LeaderboardData[] = await LeaderboardModel.getTopLeaderboard(reqData.enemyType);
 
         const responseData: LeaderboardResponse = {
             topRanks: topLeaderboard,
             myRank: playerRank,
+            winRecord: winRecord
         };
 
         return res.status(200).send({

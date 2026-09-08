@@ -1,9 +1,14 @@
 import supabase from "../../config/supabase"
+import { WinRecordData } from "./round_win.model";
 
 export interface PlayerResponse {
     username: string,
     deviceId: string,
     createdAt: Date
+}
+
+export interface InitPlayerResponse extends PlayerResponse{
+    winRecords: WinRecordData[]
 }
 
 export const PlayerModel = {

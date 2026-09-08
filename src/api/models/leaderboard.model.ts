@@ -1,10 +1,12 @@
 import supabase from "../../config/supabase";
+import { WinRecordData } from "./round_win.model";
 
 export interface LeaderboardRequest {
     deviceId: string;
     actionCount: number;
     playTime: number;
     enemyType: number;
+    isWin: boolean
 }
 export interface LeaderboardData {
     rank: number;
@@ -20,6 +22,7 @@ export interface PlayerLeaderboard extends LeaderboardData {
 export interface LeaderboardResponse {
     topRanks: LeaderboardData[];
     myRank: PlayerLeaderboard;
+    winRecord: WinRecordData
 }
 
 export const LeaderboardModel = {
