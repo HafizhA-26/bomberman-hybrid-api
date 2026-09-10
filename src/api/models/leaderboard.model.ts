@@ -10,7 +10,7 @@ export interface LeaderboardRequest {
 }
 export interface LeaderboardData {
     rank: number;
-    username: string;
+    username: string | null;
     actionCount: number;
     playTime: number;
 }

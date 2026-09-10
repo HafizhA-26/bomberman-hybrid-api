@@ -46,7 +46,9 @@ export async function LoginPlayer(req: Request, res: Response) {
             });
         }
 
-        const insertedPlayer = await PlayerModel.upsert(username, deviceId);
+        const insertedPlayer : InitPlayerResponse = await PlayerModel.upsert(username, deviceId) as InitPlayerResponse;
+        const winRecordData : WinRecordData[] = await RoundWinModel.getCurrentWinRecord(deviceId);
+        insertedPlayer.winRecords = winRecordData;
         
         return res.status(200).json({
             data: insertedPlayer,

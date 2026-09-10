@@ -42,8 +42,7 @@ export const RoundWinModel = {
             winCount = winRecord.win_count;
             loseCount = winRecord.lose_count;
         }
-
-        if(reqData.isWin)
+        if(reqData.isWin == true)
             winCount++;
         else
             loseCount++;
