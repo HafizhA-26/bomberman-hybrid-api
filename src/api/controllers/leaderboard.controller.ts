@@ -16,7 +16,8 @@ export async function PostRank(req: Request, res: Response) {
             actionCount: reqData.actionCount,
             playTime: reqData.playTime,
             rank: -1,
-            bestRank: prevRankData?.rank ?? -1
+            bestRank: prevRankData?.rank ?? -1,
+            isNewRecord: false
         };
 
         if(reqData.isWin)
@@ -28,7 +29,8 @@ export async function PostRank(req: Request, res: Response) {
                     actionCount: reqData.actionCount,
                     playTime: reqData.playTime,
                     bestRank: prevRankData.rank,
-                    rank: predictedRank
+                    rank: predictedRank,
+                    isNewRecord: false
                 }
                 
                 // Check break record and update data
@@ -38,11 +40,13 @@ export async function PostRank(req: Request, res: Response) {
                     playerRank = newRankData as PlayerLeaderboard;
                     playerRank.bestRank = newRankData.rank;
                     playerRank.rank = newRankData.rank;
+                    playerRank.isNewRecord = true
                 }
             }else{
                 const newRankData: LeaderboardData = await LeaderboardModel.insert(reqData);
                 playerRank = newRankData as PlayerLeaderboard;
                 playerRank.bestRank = newRankData.rank;
+                playerRank.isNewRecord = true;
             }
         }
 

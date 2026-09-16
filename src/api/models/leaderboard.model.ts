@@ -18,6 +18,7 @@ export interface LeaderboardData {
 
 export interface PlayerLeaderboard extends LeaderboardData {
     bestRank: number;
+    isNewRecord: boolean
 }
 
 export interface LeaderboardResponse {
