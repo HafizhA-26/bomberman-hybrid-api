@@ -50,7 +50,7 @@ export const LeaderboardModel = {
     async getPredictedRank(req: LeaderboardRequest): Promise<number> {
         const { count, error } = await supabase
             .from("leaderboards")
-            .select("*", { count: "exact", head: true })
+            .select("*", { count: "exact", head: false })
             .match({enemy_type: req.enemyType, arena: req.arena})
             .or(`playtime.lt.${req.playTime},and(playtime.eq.${req.playTime},action_count.lt.${req.actionCount})`);
 
@@ -73,7 +73,7 @@ export const LeaderboardModel = {
 
         const { data, count: playerRank, error: error_2 } = await supabase
             .from("leaderboard_view")
-            .select("*", { count: "exact", head: true })
+            .select("*", { count: "exact", head: false })
             .match({enemy_type: req.enemyType, arena: req.arena})
             .or(`playtime.lt.${playerData.playtime},and(playtime.eq.${playerData.playtime},action_count.lt.${playerData.action_count})`);
         if (error_2) 
@@ -106,7 +106,7 @@ export const LeaderboardModel = {
 
         const { count: playerRank, error: error_2 } = await supabase
             .from("leaderboard_view")
-            .select("*", { count: "exact", head: true })
+            .select("*", { count: "exact", head: false })
             .match({enemy_type: req.enemyType, arena: req.arena})
             .or(`playtime.lt.${playerData.playtime},and(playtime.eq.${playerData.playtime},action_count.lt.${playerData.action_count})`);
 
@@ -139,7 +139,7 @@ export const LeaderboardModel = {
             
         const { count: playerRank, error: error_2 } = await supabase
             .from("leaderboard_view")
-            .select("*", { count: "exact", head: true })
+            .select("*", { count: "exact", head: false })
             .match({ enemy_type: req.enemyType, arena: req.arena })
             .or(`playtime.lt.${playerData.playtime},and(playtime.eq.${playerData.playtime},action_count.lt.${playerData.action_count})`);
 
